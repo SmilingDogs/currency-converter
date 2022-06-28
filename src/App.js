@@ -7,7 +7,7 @@ import { calculateAmounts } from './util';
 function App() {
   const [currencyOptions, setCurrencyOptions] = useState([]);
   const [fromCurrency, setFromCurrency] = useState('USD');
-  const [toCurrency, setToCurrency] = useState('AED');
+  const [toCurrency, setToCurrency] = useState('UAH');
   const [exchangeRate, setExchangeRate] = useState();
   const [amount, setAmount] = useState(1);
   const [amountInFromCurrency, setAmountInFromCurrency] = useState(true);
@@ -20,7 +20,7 @@ function App() {
 
   const options = {
     method: 'GET',
-    url: 'https://exchangerate-api.p.rapidapi.com/rapid/latest/USD',
+    url: `https://exchangerate-api.p.rapidapi.com/rapid/latest/${fromCurrency}`,
     headers: {
       'X-RapidAPI-Key': 'YOUR_API_KEY',
       'X-RapidAPI-Host': 'exchangerate-api.p.rapidapi.com',
@@ -36,11 +36,7 @@ function App() {
         setCurrencyOptions([...Object.keys(data.rates)]);
         setFromCurrency(fromCurrency);
         setToCurrency(toCurrency);
-        if (fromCurrency === 'USD') {
-          setExchangeRate(data.rates[toCurrency]);
-        } else {
-          setExchangeRate(data.rates[toCurrency] / data.rates[fromCurrency]);
-        }
+        setExchangeRate(data.rates[toCurrency]);
       })
 
       .catch(function (err) {
